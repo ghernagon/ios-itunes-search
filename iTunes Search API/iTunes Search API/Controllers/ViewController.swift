@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var networkManager = NetworkManager()
-    var searchResults: [Music] = []
-    var selectedMusic: Music? = nil
+    var searchResults: [Song] = []
+    var selectedSong: Song? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "DetailSegue" {
             let destinationVC = segue.destination as! DetailViewController
-            destinationVC.musicData = selectedMusic!
+            destinationVC.musicData = selectedSong!
         }
     }
     
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
 
 // MARK: - NetworkManagerDelegate Methods
 extension ViewController: NetworkManagerDelegate {
-    func didSearchMusic(musicData: [Music]) {
+    func didSearchMusic(musicData: [Song]) {
         searchResults = musicData
         tableView.reloadData()
     }
@@ -59,9 +59,9 @@ extension ViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath) as! SearchResultTableViewCell
         
-        cell.albumLabel.text = searchResults[indexPath.row].albumName
+        cell.albumLabel.text = searchResults[indexPath.row].album?.name
         cell.artistLabel.text = searchResults[indexPath.row].artistName
-        cell.thumbImageView.af_setImage(withURL: URL(string: searchResults[indexPath.row].thumbUrl)!)
+        cell.thumbImageView.image = UIImage(data: searchResults[indexPath.row].album!.coverData!)
         
         return cell
     }
@@ -70,7 +70,7 @@ extension ViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedMusic = searchResults[indexPath.row]
+        selectedSong = searchResults[indexPath.row]
         
         performSegue(withIdentifier: "DetailSegue", sender: self)
     }
