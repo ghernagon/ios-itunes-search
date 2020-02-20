@@ -16,14 +16,4 @@ struct Song {
     var thumbUrl: String?
     var previewUrl: String?
     var album: Album?
-    
-//    init(artist artistName: String, artwork artworkUrl: String, artworkData: NSData, thumbUrl: String, album albumName: String, url albumUrl: String, preview previewUrl: String, albumId: Int, artistId: Int ) {
-//        self.artistName = artistName
-//        self.artworkUrl = artworkUrl
-//        self.thumbUrl = thumbUrl
-//        self.previewUrl = previewUrl
-//        self.artistId = artistId
-//
-//        self.album = Album(name: albumName, id: albumId, coverUrl: artworkUrl, coverData: artworkData, artistId: artistId, artistName: artistName)
-//    }
 }

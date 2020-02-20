@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.dataSource = self
-        tableView.register(UINib(nibName: "DetailTableViewCell", bundle: nil), forCellReuseIdentifier: "detailCell")
+        tableView.register(UINib(nibName: K.Detail.cellNibName, bundle: nil), forCellReuseIdentifier: K.Detail.cellIdentifier)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -48,7 +48,7 @@ extension DetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! DetailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.Detail.cellIdentifier, for: indexPath) as! DetailTableViewCell
         cell.delegate = self
         cell.artistNameLabel.text = musicData?.album?.tracks![indexPath.row].artistName
         cell.trackNameLabel.text = musicData?.album?.tracks![indexPath.row].trackName
@@ -71,22 +71,22 @@ extension DetailViewController: DetailTableViewCellDelegate {
                 playerItem = AVPlayerItem(url: url!)
                 player = AVPlayer(playerItem: playerItem)
                 player!.play()
-                cell.avControlButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+                cell.avControlButton.setImage(UIImage(systemName: K.Detail.pauseIcon), for: .normal)
             } else if player?.rate == 0 {
                 player!.play()
-                cell.avControlButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+                cell.avControlButton.setImage(UIImage(systemName: K.Detail.pauseIcon), for: .normal)
             } else {
                 player?.pause()
-                cell.avControlButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+                cell.avControlButton.setImage(UIImage(systemName: K.Detail.playIcon), for: .normal)
             }
             
         } else {
-            currentCell!.avControlButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            currentCell!.avControlButton.setImage(UIImage(systemName: K.Detail.playIcon), for: .normal)
             let url = URL(string: url)
             playerItem = AVPlayerItem(url: url!)
             player = AVPlayer(playerItem: playerItem)
             player!.play()
-            cell.avControlButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            cell.avControlButton.setImage(UIImage(systemName: K.Detail.pauseIcon), for: .normal)
             currentCell = cell
         }
         

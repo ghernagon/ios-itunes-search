@@ -23,14 +23,14 @@ class ViewController: UIViewController {
         networkManager.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "resultCell")
+        tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         
         searchBar.delegate = self
         searchBar.showsCancelButton = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "DetailSegue" {
+        if segue.identifier == K.detailSegue {
             let destinationVC = segue.destination as! DetailViewController
             destinationVC.musicData = selectedSong!
         }
@@ -57,7 +57,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath) as! SearchResultTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SearchResultTableViewCell
         
         cell.albumLabel.text = searchResults[indexPath.row].album?.name
         cell.artistLabel.text = searchResults[indexPath.row].artistName
@@ -72,7 +72,7 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSong = searchResults[indexPath.row]
         
-        performSegue(withIdentifier: "DetailSegue", sender: self)
+        performSegue(withIdentifier: K.detailSegue, sender: self)
     }
 }
 

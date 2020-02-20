@@ -11,11 +11,6 @@ import Alamofire
 import AlamofireImage
 import SwiftyJSON
 
-protocol NetworkManagerDelegate {
-    func didSearchMusic(musicData: [Song])
-    func didFailWithError(error: Error)
-}
-
 struct NetworkManager {
     let searchURL = "https://itunes.apple.com/search"
     let lookupURL = "https://itunes.apple.com/lookup"
@@ -59,7 +54,6 @@ struct NetworkManager {
                 let artworkUrl = item["artworkUrl100"].stringValue
                 let thumbUrl = item["artworkUrl60"].stringValue
                 let albumName = item["collectionName"].stringValue
-                let albumUrl = item["collectionViewUrl"].stringValue
                 let previewUrl = item["previewUrl"].stringValue
                 let albumId = item["collectionId"].intValue
                 

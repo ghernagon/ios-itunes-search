@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol DetailTableViewCellDelegate {
-    func didPressedAudioControl(cell: DetailTableViewCell, url: String)
-}
-
 class DetailTableViewCell: UITableViewCell {
 
     @IBOutlet weak var trackNameLabel: UILabel!
