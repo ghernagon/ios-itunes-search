@@ -28,13 +28,11 @@ struct NetworkManager {
     func searchMusic(by term: String) {
         let safeTerm = term.replacingOccurrences(of: " ", with: "+")
         let urlString = "\(searchURL)?entity=\(entity)&limit=\(limit)&term=\(safeTerm)"
-        print(urlString)
         performRequest(with: urlString)
     }
     
     private func performRequest(with urlString: String) {
         AF.request(urlString).validate().responseJSON { response in
-            print(response)
             switch response.result {
             case .success:
                 self.parseResponse(response: response)
@@ -51,10 +49,10 @@ struct NetworkManager {
         var musicArray:[Song] = []
         let jsonData = JSON(response.value!)
 
-        if let resultsArray = jsonData["results"].array {
-            for item in resultsArray {
+        if let songsArray = jsonData["results"].array {
+            for item in songsArray {
                 parseGroup.enter()
-                
+
                 let trackName = item["trackName"].stringValue
                 let artistName = item["artistName"].stringValue
                 let artistId = item["artistId"].intValue
@@ -82,7 +80,6 @@ struct NetworkManager {
                 newAlbum.name = albumName
                 newAlbum.tracks = [Song]()
                 
-                
                 // Download cover image
                 requestGroup.enter()
                 AF.request(newAlbum.coverUrl!).responseImage { (response) in
@@ -98,29 +95,28 @@ struct NetworkManager {
                 AF.request(urlString).validate().responseJSON { response in
                     switch response.result {
                     case .success:
-//                        print("RESPONSE LOOKUP: ", response.value)
-                        if let responseArray = jsonData["results"].array {
-                            for item in responseArray {
-                                guard item["wrapperType"] == "track" else { continue }
-                                
+                        let jsonTracksData = JSON(response.value!)
+                        if let responseArray = jsonTracksData["results"].array {
+                            for track in responseArray {
+                                guard track["wrapperType"] == "track" else { continue }
                                 var newSong = Song()
-                                newSong.artistId = item["artistId"].intValue
-                                newSong.artistName = item["artistName"].stringValue
-                                newSong.previewUrl = item["previewUrl"].stringValue
-                                newSong.artworkUrl = item["artworkUrl100"].stringValue
-                                newSong.thumbUrl = item["artworkUrl60"].stringValue
-                                newSong.trackName = item["trackName"].stringValue
-                                
+                                newSong.artistId = track["artistId"].intValue
+                                newSong.artistName = track["artistName"].stringValue
+                                newSong.previewUrl = track["previewUrl"].stringValue
+                                newSong.artworkUrl = track["artworkUrl100"].stringValue
+                                newSong.thumbUrl = track["artworkUrl60"].stringValue
+                                newSong.trackName = track["trackName"].stringValue
+
                                 newAlbum.tracks?.append(newSong)
                             }
                         }
                     case let .failure(error):
                         self.delegate?.didFailWithError(error: error)
                     }
-                    
+
                     requestGroup.leave()
                 }
-                
+
                 requestGroup.notify(queue: .main) {
                     newTrack.album = newAlbum
                     musicArray.append(newTrack)

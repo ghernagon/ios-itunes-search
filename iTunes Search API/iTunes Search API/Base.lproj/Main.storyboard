@@ -97,14 +97,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fGq-Ip-pl5">
-                                        <rect key="frame" x="10" y="204" width="374" height="584"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="69" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fGq-Ip-pl5">
+                                        <rect key="frame" x="0.0" y="204" width="394" height="584"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                     </tableView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="fGq-Ip-pl5" firstAttribute="leading" secondItem="1wd-Tu-fTc" secondAttribute="leading" constant="10" id="A43-V7-xSg"/>
-                                    <constraint firstAttribute="trailing" secondItem="fGq-Ip-pl5" secondAttribute="trailing" constant="10" id="L61-jb-3fk"/>
+                                    <constraint firstItem="fGq-Ip-pl5" firstAttribute="leading" secondItem="1wd-Tu-fTc" secondAttribute="leading" id="A43-V7-xSg"/>
+                                    <constraint firstAttribute="trailing" secondItem="fGq-Ip-pl5" secondAttribute="trailing" id="L61-jb-3fk"/>
                                 </constraints>
                             </stackView>
                         </subviews>

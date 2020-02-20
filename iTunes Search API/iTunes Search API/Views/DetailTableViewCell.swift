@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol DetailTableViewCellDelegate {
+    func didPressedAudioControl(cell: DetailTableViewCell, url: String)
+}
+
 class DetailTableViewCell: UITableViewCell {
 
     @IBOutlet weak var trackNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
+    @IBOutlet weak var avControlButton: UIButton!
     
     var trackPreviewUrl: String? = nil
+    var delegate: DetailTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,5 +33,6 @@ class DetailTableViewCell: UITableViewCell {
     }
     
     @IBAction func playButtonPressed(_ sender: UIButton) {
+        delegate?.didPressedAudioControl(cell: self, url: trackPreviewUrl!)
     }
 }
