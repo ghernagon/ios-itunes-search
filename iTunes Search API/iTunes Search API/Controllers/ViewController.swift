@@ -15,17 +15,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var networkManager = NetworkManager()
-    
     var searchResults: [Music] = []
+    var selectedMusic: Music? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         networkManager.delegate = self
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "resultCell")
         
         searchBar.delegate = self
         searchBar.showsCancelButton = true
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailSegue" {
+            let destinationVC = segue.destination as! DetailViewController
+            destinationVC.musicData = selectedMusic!
+        }
     }
     
 }
@@ -56,6 +64,15 @@ extension ViewController: UITableViewDataSource {
         cell.thumbImageView.af_setImage(withURL: URL(string: searchResults[indexPath.row].thumbUrl)!)
         
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedMusic = searchResults[indexPath.row]
+        
+        performSegue(withIdentifier: "DetailSegue", sender: self)
     }
 }
 

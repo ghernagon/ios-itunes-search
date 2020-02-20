@@ -31,7 +31,6 @@ struct NetworkManager {
     
     private func performRequest(with urlString: String) {
         AF.request(urlString).validate().responseJSON { response in
-            print(response)
             switch response.result {
             case .success:
                 self.parseResponse(response: response)
