@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class ViewController: UIViewController {
 
@@ -21,10 +22,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         networkManager.delegate = self
         tableView.dataSource = self
-    }
-
-    @IBAction func buttonPressed(_ sender: UIButton) {
-        networkManager.searchMusic(by: "a9s8dy7a8bsdad8989 asd7889as7d")
+        tableView.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "resultCell")
+        
+        searchBar.delegate = self
+        searchBar.showsCancelButton = true
     }
     
 }
@@ -48,11 +49,31 @@ extension ViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell") as! SearchResultTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath) as! SearchResultTableViewCell
         
-        cell.textLabel?.text = searchResults[indexPath.row].albumName
+        cell.albumLabel.text = searchResults[indexPath.row].albumName
+        cell.artistLabel.text = searchResults[indexPath.row].artistName
+        cell.thumbImageView.af_setImage(withURL: URL(string: searchResults[indexPath.row].thumbUrl)!)
         
         return cell
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchTerm = searchBar.text {
+            networkManager.searchMusic(by: searchTerm)
+        }
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }
 

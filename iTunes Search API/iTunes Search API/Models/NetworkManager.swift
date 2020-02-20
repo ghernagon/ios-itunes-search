@@ -50,7 +50,7 @@ struct NetworkManager {
             for item in resultsArray {
                 let artistName = item["artistName"].stringValue
                 let artworkUrl = item["artworkUrl100"].stringValue
-                let thumbUrl = item["artworkUrl30"].stringValue
+                let thumbUrl = item["artworkUrl60"].stringValue
                 let albumName = item["collectionName"].stringValue
                 let albumUrl = item["collectionViewUrl"].stringValue
                 let previewUrl = item["previewUrl"].stringValue

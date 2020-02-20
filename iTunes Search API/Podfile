@@ -8,6 +8,7 @@ target 'iTunes Search API' do
   # Pods for iTunes Search API
   pod 'Alamofire', '~> 5.0'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'AlamofireImage', '~> 4.0.0-beta.6'
 
   target 'iTunes Search APITests' do
     inherit! :search_paths
