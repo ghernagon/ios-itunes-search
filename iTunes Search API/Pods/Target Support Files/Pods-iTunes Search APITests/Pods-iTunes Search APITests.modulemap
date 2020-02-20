@@ -1,0 +1,6 @@
+framework module Pods_iTunes_Search_APITests {
+  umbrella header "Pods-iTunes Search APITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
