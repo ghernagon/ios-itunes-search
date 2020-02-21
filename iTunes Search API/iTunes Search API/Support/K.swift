@@ -12,6 +12,7 @@ struct K {
     static let cellIdentifier = "resultCell"
     static let cellNibName = "SearchResultTableViewCell"
     static let detailSegue = "DetailSegue"
+    static let previousSearchTitle = "Búsquedas anteriores"
     
     struct Detail {
         static let cellIdentifier = "detailCell"

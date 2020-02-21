@@ -22,6 +22,7 @@ struct NetworkManager {
     var delegate: NetworkManagerDelegate?
     let localDataManager = LocalDataManager()
     
+    // It form the URL based on search term
     mutating func searchMusic(by term: String) {
         currentSearchTerm = term
         let safeTerm = term.replacingOccurrences(of: " ", with: "+")
@@ -29,6 +30,7 @@ struct NetworkManager {
         performRequest(with: urlString)
     }
     
+    // Perform search music request
     private func performRequest(with urlString: String) {
         AF.request(urlString).validate().responseJSON { response in
             switch response.result {
@@ -40,6 +42,7 @@ struct NetworkManager {
         }
     }
     
+    // Parse the search response
     private func parseResponse(response: AFDataResponse<Any>) {
         let requestGroup = DispatchGroup()
         let parseGroup = DispatchGroup()
@@ -127,12 +130,10 @@ struct NetworkManager {
         parseGroup.notify(queue: .main) {
             self.delegate?.didSearchMusic(musicData: musicArray)
             
-            // Save the whole searh data
+            // Save the searh term and response data
             self.localDataManager.storeTerm(self.currentSearchTerm)
             self.localDataManager.storeSearchData(forSearchTerm: self.currentSearchTerm, data: musicArray)
-            
         }
     }
-    
 }
 

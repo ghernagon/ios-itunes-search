@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     var searchResults: [Song] = []
     var selectedSong: Song? = nil
     let localDataManager = LocalDataManager()
+    var shouldShowPreviousSearch: Bool = true
+    var previousSearchTerms: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,7 @@ class ViewController: UIViewController {
 // MARK: - NetworkManagerDelegate Methods
 extension ViewController: NetworkManagerDelegate {
     func didSearchMusic(musicData: [Song]) {
+        shouldShowPreviousSearch = false
         searchResults = musicData
         tableView.reloadData()
     }
@@ -54,15 +57,31 @@ extension ViewController: NetworkManagerDelegate {
 // MARK: - UITableView DataSource
 extension ViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        var numberOfRows = 0
+        
+        if shouldShowPreviousSearch {
+            numberOfRows = previousSearchTerms.count
+        } else {
+            numberOfRows = searchResults.count
+        }
+        
+        return numberOfRows
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SearchResultTableViewCell
+        var cell: UITableViewCell!
         
-        cell.albumLabel.text = searchResults[indexPath.row].album?.name
-        cell.artistLabel.text = searchResults[indexPath.row].artistName
-        cell.thumbImageView.image = UIImage(data: searchResults[indexPath.row].album!.coverData!)
+        if shouldShowPreviousSearch {
+            let historyCell = UITableViewCell()
+            historyCell.textLabel?.text = previousSearchTerms[indexPath.row]
+            cell = historyCell
+        } else {
+            let searchCell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SearchResultTableViewCell
+            searchCell.albumLabel.text = searchResults[indexPath.row].album?.name
+            searchCell.artistLabel.text = searchResults[indexPath.row].artistName
+            searchCell.thumbImageView.image = UIImage(data: searchResults[indexPath.row].album!.coverData!)
+            cell = searchCell
+        }
         
         return cell
     }
@@ -71,40 +90,51 @@ extension ViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedSong = searchResults[indexPath.row]
+        if shouldShowPreviousSearch {
+            searchResults = localDataManager.getSearchData(forSearchTerm: previousSearchTerms[indexPath.row])!
+            shouldShowPreviousSearch = false
+            tableView.reloadData()
+        } else {
+            selectedSong = searchResults[indexPath.row]
+            performSegue(withIdentifier: K.detailSegue, sender: self)
+        }
+        searchBar.endEditing(true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
         
-        performSegue(withIdentifier: K.detailSegue, sender: self)
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0.02 * Double(indexPath.row),
+            animations: {
+                cell.alpha = 1
+        })
     }
 }
 
 // MARK: - UISearchBarDelegate
 extension ViewController: UISearchBarDelegate {
-    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-        print(localDataManager.getSearchTerms())
-        
-//        if let historyData = LocalDataManager().getSearchData(forSearchTerm: "Farruko") {
-//            searchResults = historyData
-//            tableView.reloadData()
-//        }
+        if searchBar.text!.isEmpty {
+            shouldShowPreviousSearch = true
+            previousSearchTerms = localDataManager.getSearchTerms()!
+            tableView.reloadData()
+            title = K.previousSearchTitle
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchTerm = searchBar.text {
+        let searchTerm = searchBar.text!
+        if !searchTerm.isEmpty {
             networkManager.searchMusic(by: searchTerm)
+            title = searchTerm
         }
-//        searchBar.resignFirstResponder()
         searchBar.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        searchBar.resignFirstResponder()
         searchBar.endEditing(true)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        searchBar.resignFirstResponder()
     }
 }
 

@@ -24,15 +24,19 @@ class LocalDataManager {
     }
     
     // MARK: - API
+    
+    // Store search term
     func storeTerm(_ searchTerm: String) {
         let time = Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
         userDefaults.set(["date": time, "term": searchTerm], forKey: "term_\(searchTerm)")
     }
     
+    // Store search results by term
     func storeSearchData(forSearchTerm searchTerm: String, data: [Song]) {
         saveValue(forKey: .searchData, value: data, searchTerm: searchTerm)
     }
     
+    // Get an array of previous searches (just terms)
     func getSearchTerms() -> [String]? {
         var dafaultsSearch: [[String : Any]] = []
         var sortedHistorySearch: [String] = []
@@ -42,7 +46,7 @@ class LocalDataManager {
                 dafaultsSearch.append(userDefaults.dictionary(forKey: key)!)
             }
         }
-        let sortedArray = dafaultsSearch.sorted { $0["date"] as? Int64 ?? .zero < $1["date"] as? Int64 ?? .zero }
+        let sortedArray = dafaultsSearch.sorted { $0["date"] as? Int64 ?? .zero > $1["date"] as? Int64 ?? .zero }
         
         for dict in sortedArray {
             sortedHistorySearch.append(dict["term"] as! String)
@@ -51,11 +55,13 @@ class LocalDataManager {
         return sortedHistorySearch
     }
     
+    // Get local stored data by search term
     func getSearchData(forSearchTerm searchTerm: String) -> [Song]? {
         let searchResult: [Song]? = readValue(forKey: .searchData, searchTerm: searchTerm)
         return searchResult
     }
     
+    // Remove local stored data by search term
     func removeSearchData(forSearchTerm searchTerm: String) {
         Key
             .allCases
@@ -65,6 +71,7 @@ class LocalDataManager {
         }
     }
     
+    // It write data to NSUserDefaults
     private func saveValue(forKey key: Key, value: [Song], searchTerm: String) {
         let encoder = JSONEncoder()
         if let encodedValue = try? encoder.encode(value) {
@@ -72,6 +79,7 @@ class LocalDataManager {
         }
     }
     
+    // It reads the stored local data by search term
     private func readValue<T>(forKey key: Key, searchTerm: String) -> [T]? {
         if let savedData = userDefaults.value(forKey: key.make(for: searchTerm)) as? Data {
             let decoder = JSONDecoder()
