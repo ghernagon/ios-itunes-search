@@ -24,11 +24,34 @@ class LocalDataManager {
     }
     
     // MARK: - API
+    func storeTerm(_ searchTerm: String) {
+        let time = Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
+        userDefaults.set(["date": time, "term": searchTerm], forKey: "term_\(searchTerm)")
+    }
+    
     func storeSearchData(forSearchTerm searchTerm: String, data: [Song]) {
         saveValue(forKey: .searchData, value: data, searchTerm: searchTerm)
     }
     
-    func getSearchData(forSearchTerm searchTerm: String) -> ([Song]?) {
+    func getSearchTerms() -> [String]? {
+        var dafaultsSearch: [[String : Any]] = []
+        var sortedHistorySearch: [String] = []
+        
+        for key in userDefaults.dictionaryRepresentation().keys {
+            if key.hasPrefix("term_"){
+                dafaultsSearch.append(userDefaults.dictionary(forKey: key)!)
+            }
+        }
+        let sortedArray = dafaultsSearch.sorted { $0["date"] as? Int64 ?? .zero < $1["date"] as? Int64 ?? .zero }
+        
+        for dict in sortedArray {
+            sortedHistorySearch.append(dict["term"] as! String)
+        }
+        
+        return sortedHistorySearch
+    }
+    
+    func getSearchData(forSearchTerm searchTerm: String) -> [Song]? {
         let searchResult: [Song]? = readValue(forKey: .searchData, searchTerm: searchTerm)
         return searchResult
     }
@@ -49,12 +72,15 @@ class LocalDataManager {
         }
     }
     
-    private func readValue<T>(forKey key: Key, searchTerm: String) -> T? {
+    private func readValue<T>(forKey key: Key, searchTerm: String) -> [T]? {
         if let savedData = userDefaults.value(forKey: key.make(for: searchTerm)) as? Data {
             let decoder = JSONDecoder()
-            if let loadedData = try? decoder.decode(Song.self, from: savedData) {
-                print(loadedData.artistName)
-                return loadedData as! T
+            do {
+                if let loadedData = try? decoder.decode([Song].self, from: savedData) {
+                    return loadedData as? [T]
+                }
+            } catch  {
+                print(error)
             }
         }
         return nil

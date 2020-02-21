@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var networkManager = NetworkManager()
     var searchResults: [Song] = []
     var selectedSong: Song? = nil
+    let localDataManager = LocalDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,23 +81,30 @@ extension ViewController: UITableViewDelegate {
 extension ViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        print("aqui")
-        LocalDataManager().getSearchData(forSearchTerm: "Farruko")
+        
+        print(localDataManager.getSearchTerms())
+        
+//        if let historyData = LocalDataManager().getSearchData(forSearchTerm: "Farruko") {
+//            searchResults = historyData
+//            tableView.reloadData()
+//        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchTerm = searchBar.text {
             networkManager.searchMusic(by: searchTerm)
         }
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
+        searchBar.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
+        searchBar.endEditing(true)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
     }
 }
 

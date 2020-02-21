@@ -20,6 +20,7 @@ struct NetworkManager {
     
     var currentSearchTerm: String = ""
     var delegate: NetworkManagerDelegate?
+    let localDataManager = LocalDataManager()
     
     mutating func searchMusic(by term: String) {
         currentSearchTerm = term
@@ -127,7 +128,8 @@ struct NetworkManager {
             self.delegate?.didSearchMusic(musicData: musicArray)
             
             // Save the whole searh data
-//            LocalDataManager().storeSearchData(forSearchTerm: self.currentSearchTerm, data: musicArray)
+            self.localDataManager.storeTerm(self.currentSearchTerm)
+            self.localDataManager.storeSearchData(forSearchTerm: self.currentSearchTerm, data: musicArray)
             
         }
     }
