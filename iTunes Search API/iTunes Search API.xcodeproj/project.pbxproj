@@ -26,6 +26,7 @@
 		D2AC4CC323FF48B200AADDA8 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AC4CC223FF48B200AADDA8 /* K.swift */; };
 		D2AC4CC623FF4AB300AADDA8 /* NetworkManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AC4CC523FF4AB300AADDA8 /* NetworkManagerDelegate.swift */; };
 		D2AC4CC823FF4AD300AADDA8 /* DetailTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AC4CC723FF4AD300AADDA8 /* DetailTableViewCellDelegate.swift */; };
+		D2AC4CCD23FF52D700AADDA8 /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AC4CCC23FF52D700AADDA8 /* LocalDataManager.swift */; };
 		D2B76A2E23FE3F0C00B9832B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B76A2D23FE3F0C00B9832B /* DetailViewController.swift */; };
 		D2B76A3023FEB32D00B9832B /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B76A2F23FEB32D00B9832B /* Album.swift */; };
 		F2EB9120DF10380E2D362EDC /* Pods_iTunes_Search_APITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29ACA1975CF09A48B6E37A18 /* Pods_iTunes_Search_APITests.framework */; };
@@ -79,6 +80,7 @@
 		D2AC4CC223FF48B200AADDA8 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D2AC4CC523FF4AB300AADDA8 /* NetworkManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerDelegate.swift; sourceTree = "<group>"; };
 		D2AC4CC723FF4AD300AADDA8 /* DetailTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCellDelegate.swift; sourceTree = "<group>"; };
+		D2AC4CCC23FF52D700AADDA8 /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
 		D2B76A2D23FE3F0C00B9832B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D2B76A2F23FEB32D00B9832B /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		E7AB5795B9E32733972F9D55 /* Pods_iTunes_Search_API_iTunes_Search_APIUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iTunes_Search_API_iTunes_Search_APIUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +222,7 @@
 				D21DCF4023FE0A6A0075F19E /* NetworkManager.swift */,
 				D21DCF4223FE16B00075F19E /* Song.swift */,
 				D2B76A2F23FEB32D00B9832B /* Album.swift */,
+				D2AC4CCC23FF52D700AADDA8 /* LocalDataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				D21DCF4123FE0A6A0075F19E /* NetworkManager.swift in Sources */,
 				D2AC4CC823FF4AD300AADDA8 /* DetailTableViewCellDelegate.swift in Sources */,
 				D2AC4CC623FF4AB300AADDA8 /* NetworkManagerDelegate.swift in Sources */,
+				D2AC4CCD23FF52D700AADDA8 /* LocalDataManager.swift in Sources */,
 				D21DCF1223FE08710075F19E /* ViewController.swift in Sources */,
 				D298608D23FE29850018FA07 /* SearchResultTableViewCell.swift in Sources */,
 				D21DCF4323FE16B00075F19E /* Song.swift in Sources */,

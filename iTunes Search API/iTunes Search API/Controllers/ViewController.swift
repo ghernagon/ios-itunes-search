@@ -78,6 +78,12 @@ extension ViewController: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 extension ViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print("aqui")
+        LocalDataManager().getSearchData(forSearchTerm: "Farruko")
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchTerm = searchBar.text {
             networkManager.searchMusic(by: searchTerm)

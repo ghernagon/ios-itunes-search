@@ -18,9 +18,11 @@ struct NetworkManager {
     let mediaType = "music"
     let entity = "song"
     
+    var currentSearchTerm: String = ""
     var delegate: NetworkManagerDelegate?
     
-    func searchMusic(by term: String) {
+    mutating func searchMusic(by term: String) {
+        currentSearchTerm = term
         let safeTerm = term.replacingOccurrences(of: " ", with: "+")
         let urlString = "\(searchURL)?entity=\(entity)&limit=\(limit)&term=\(safeTerm)"
         performRequest(with: urlString)
@@ -123,6 +125,10 @@ struct NetworkManager {
         
         parseGroup.notify(queue: .main) {
             self.delegate?.didSearchMusic(musicData: musicArray)
+            
+            // Save the whole searh data
+//            LocalDataManager().storeSearchData(forSearchTerm: self.currentSearchTerm, data: musicArray)
+            
         }
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Song {
+struct Song: Codable {
     var trackName: String?
     var artistId: Int?
     var artistName: String?
