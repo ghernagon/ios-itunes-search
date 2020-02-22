@@ -102,14 +102,9 @@ extension ViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.alpha = 0
-        
-        UIView.animate(
-            withDuration: 0.5,
-            delay: 0.02 * Double(indexPath.row),
-            animations: {
-                cell.alpha = 1
-        })
+        let animation = AnimationFactory.moveUpAndFade(rowHeight: cell.frame.height, duration: 0.5, delay: 0.05)
+        let animator = Animator(animation: animation)
+        animator.animate(cell: cell, at: indexPath, in: tableView)
     }
 }
 
@@ -137,4 +132,3 @@ extension ViewController: UISearchBarDelegate {
         searchBar.endEditing(true)
     }
 }
-
