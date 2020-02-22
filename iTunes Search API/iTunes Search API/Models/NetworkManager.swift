@@ -12,19 +12,20 @@ import AlamofireImage
 import SwiftyJSON
 
 struct NetworkManager {
-    let searchURL = "https://itunes.apple.com/search"
-    let lookupURL = "https://itunes.apple.com/lookup"
-    let limit = 20
-    let mediaType = "music"
-    let entity = "song"
+    private let searchURL = "https://itunes.apple.com/search"
+    private let lookupURL = "https://itunes.apple.com/lookup"
+    private var limit: Int?
+    private let mediaType = "music"
+    private let entity = "song"
     
-    var currentSearchTerm: String = ""
+    private var currentSearchTerm: String = ""
     var delegate: NetworkManagerDelegate?
-    let localDataManager = LocalDataManager()
+    var localDataManager = LocalDataManager()
     
     // It form the URL based on search term
-    mutating func searchMusic(by term: String) {
+    mutating func searchMusic(by term: String, andLimitTo limit: Int) {
         currentSearchTerm = term
+        self.limit = limit
         let safeTerm = term.replacingOccurrences(of: " ", with: "+")
         let urlString = "\(searchURL)?entity=\(entity)&limit=\(limit)&term=\(safeTerm)"
         performRequest(with: urlString)

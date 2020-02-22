@@ -122,7 +122,7 @@ extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let searchTerm = searchBar.text!
         if !searchTerm.isEmpty {
-            networkManager.searchMusic(by: searchTerm)
+            networkManager.searchMusic(by: searchTerm, andLimitTo: 20)
             title = searchTerm
         }
         searchBar.endEditing(true)

@@ -17,11 +17,12 @@ class LocalDataManager {
         }
     }
     
-    let userDefaults: UserDefaults
+    var userDefaults: UserDefaults = UserDefaults.standard
     
-    init(userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
-    }
+//    init(userDefaults: UserDefaults = .standard) {
+//        self.userDefaults = userDefaults
+//        print(userDefaults)
+//    }
     
     // MARK: - API
     

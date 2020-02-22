@@ -2,13 +2,15 @@
 //  iTunes_Search_APIUITests.swift
 //  iTunes Search APIUITests
 //
-//  Created by Gerardo Hernández González on 19-02-20.
+//  Created by Gerardo Hernández González on 22-02-20.
 //  Copyright © 2020 Gerardo Hernández González. All rights reserved.
 //
 
 import XCTest
 
 class iTunes_Search_APIUITests: XCTestCase {
+    
+    var app: XCUIApplication!
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -23,13 +25,52 @@ class iTunes_Search_APIUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // UI tests must launch the application that they test.
+    func testSearch() {
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        // Given
+        let searchBar = app.searchFields["Buscar"].tap()
+        app.searchFields["Buscar"].typeText("Welcome to the jungle")
+        let searchButton = app.buttons["Search"].tap()
+        
+        // Then
+    }
+    
+    func testSelectSearchResult() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Given
+        let searchBar = app.searchFields["Buscar"].tap()
+        app.searchFields["Buscar"].typeText("Welcome to the jungle")
+        let searchButton = app.buttons["Search"].tap()
+                
+        let tablesQuery = app.tables
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Greatest Hits"]/*[[".cells.staticTexts[\"Greatest Hits\"]",".staticTexts[\"Greatest Hits\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+    }
+    
+    func testSelectedSong() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Given
+        let searchBar = app.searchFields["Buscar"].tap()
+        app.searchFields["Buscar"].typeText("Welcome to the jungle")
+        let searchButton = app.buttons["Search"].tap()
+        
+        let tablesQuery = app.tables
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Greatest Hits"]/*[[".cells.staticTexts[\"Greatest Hits\"]",".staticTexts[\"Greatest Hits\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        
+        let selectedResultTitle = app.staticTexts["Greatest Hits"]
+        let selectedResultArtist = app.staticTexts["Guns N' Roses"]
+        
+        let selectedResultTrack1 = tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Welcome to the Jungle"]/*[[".cells.staticTexts[\"Welcome to the Jungle\"]",".staticTexts[\"Welcome to the Jungle\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        let selectedResultTrack2 = tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Sweet Child O' Mine"]/*[[".cells.staticTexts[\"Sweet Child O' Mine\"]",".staticTexts[\"Sweet Child O' Mine\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        let selectedResultTrack3 = tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Patience"]/*[[".cells.staticTexts[\"Patience\"]",".staticTexts[\"Patience\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        
+        app.tables.cells.containing(.staticText, identifier:"Welcome to the Jungle").buttons["play.fill"].tap()
+        tablesQuery/*@START_MENU_TOKEN@*/.buttons["pause.fill"]/*[[".cells.buttons[\"pause.fill\"]",".buttons[\"pause.fill\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
     }
 
     func testLaunchPerformance() {
